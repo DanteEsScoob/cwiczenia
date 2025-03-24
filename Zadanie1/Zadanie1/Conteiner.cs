@@ -2,11 +2,16 @@
 
 public abstract class Conteiner
 {
-    private int _counter = 0;
-    protected double cargoWeight;
+    private static int _counter = 0;
+    protected double cargoWeight { get; set; }
 
     public string SerialNumber { get; set; }
-    public double CargoWeight => cargoWeight;
+    public double CargoWeight
+    {
+        get => cargoWeight;
+        set => cargoWeight = value;
+    }
+
     public double MaxCargo => maxCargo;
     protected double maxCargo;
     public double Height { get; set; }

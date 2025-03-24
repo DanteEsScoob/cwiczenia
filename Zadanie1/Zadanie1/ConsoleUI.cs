@@ -41,6 +41,7 @@ public class ConsoleUI
             Console.WriteLine("8. Przenieś kontener między statkami");
             Console.WriteLine("9. Informacje o kontenerze");
             Console.WriteLine("10. Informacje o statku");
+            Console.WriteLine("11. Opróżnij kontener");
             Console.WriteLine("0. Wyjście");
             Console.WriteLine("Co chcesz zrobić?: ");
             var input = Console.ReadLine();
@@ -57,6 +58,7 @@ public class ConsoleUI
                 case "8": MoveContainer(); break;
                 case "9": DisplayConteinerInfo();break;
                 case "10": DisplayShipInfo();break;
+                case "11": RemoveCargoFromConteiner(); break;
                 case "0": work = false; break;
                 default: Console.WriteLine("Nie znana komenda! "); break;
                 
@@ -65,6 +67,21 @@ public class ConsoleUI
                 
             
             
+        }
+    }
+
+    private void RemoveCargoFromConteiner()
+    {
+        Console.WriteLine("Numer seryjny kontenera: ");
+        var serialNumber = Console.ReadLine();
+        var k = conteiners.Find(c => c.SerialNumber == serialNumber);
+        if (k is null)
+        {
+            Console.WriteLine("Nie znana komenda! ");
+        }
+        else
+        {
+            k.RemoveCargo();
         }
     }
 
@@ -215,7 +232,12 @@ public class ConsoleUI
         var height = double.Parse(Console.ReadLine());
         Console.WriteLine("Głębokość kontenera: ");
         var depth = double.Parse(Console.ReadLine());
-
+        Console.WriteLine("Masa własna: ");
+        var ownMas = double.Parse(Console.ReadLine());
+        Console.WriteLine("Podaj mase w KG: ");
+        var cargo = double.Parse(Console.ReadLine());
+        
+        
         Conteiner newConteiner = null;
 
         switch (type)
@@ -224,11 +246,9 @@ public class ConsoleUI
                 Console.Write("Czy niebezpieczny (true/false): ");
                 bool hazard = bool.Parse(Console.ReadLine());
                 newConteiner = new LiquidConteiner(maxCargo, hazard);
-                conteiners.Add(newConteiner);
                 break;
             case "G":
                 newConteiner = new GasContainer(maxCargo);
-                conteiners.Add(newConteiner);
                 break;
             case "C":
                 Console.Write("Produkt: ");
@@ -236,7 +256,6 @@ public class ConsoleUI
                 Console.Write("Temperatura: ");
                 double temp = double.Parse(Console.ReadLine());
                 newConteiner = new FreezerConteiner(maxCargo, product, temp);
-                conteiners.Add(newConteiner);
                 break;
             default:
                 Console.WriteLine("Nie znany typ kontenera! ");
@@ -247,6 +266,9 @@ public class ConsoleUI
         {
             newConteiner.Height = height;
             newConteiner.Depth = depth;
+            newConteiner.OwnMass = ownMas;
+            newConteiner.AddCargo(cargo);
+            conteiners.Add(newConteiner);
         }
     }
     
